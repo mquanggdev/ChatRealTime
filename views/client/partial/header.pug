@@ -1,0 +1,36 @@
+header.header
+  .container
+    .row.align-items-center
+      .col-3
+        .inner-logo
+          a(href="/")
+            img(src="https://t3.ftcdn.net/jpg/04/48/25/68/360_F_448256821_rYfuT92jaVPhHdFw2I8R2AcNUfM8fbrD.jpg", alt="Logo")
+
+      .col-5
+        form(
+          action="/search"
+          method="GET"
+        ) 
+          div(class="form-group d-flex mb-0")
+            input(
+              type="text"
+              placeholder="Nhập từ khóa..."
+              class="form-control"
+              name="keyword"
+            )
+            button(
+              type="submit"
+              class="btn btn-primary"
+            ) Tìm
+
+      .col-4
+        .inner-menu
+          ul
+              li
+                a(href="/chat") Chat
+              li
+                a(href="/users/logout") Đăng xuất
+              li
+                a(href="/users/login") Đăng nhập
+              li
+                a(href="/users/register") Đăng ký
