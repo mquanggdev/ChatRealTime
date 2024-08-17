@@ -2,7 +2,7 @@ include ../../layout/default.pug
 block main
     .body-container
         .login-container
-            h2 Đăng Nhập
+            h2 Đăng Ký
             form(action='/users/register', method='POST')
                 .input-group
                     label(for='username') Tên người dùng
@@ -14,4 +14,4 @@ block main
                     label(for='password') Mật khẩu
                     input(type='password', name='password', required='' id="password")
 
-                button(type='submit' class="login-button") Đăng Nhập
+                button(type='submit' class="login-button") Đăng Ký
