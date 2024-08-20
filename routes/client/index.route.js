@@ -9,5 +9,5 @@ module.exports = (app) => {
     app.use("/" , homeRoute);
     app.use("/users" , userRoute);
     app.use("/dashboard" , dashboardRoute);
-    app.use("/chat" , chatRoute);
+    app.use("/chat",usersMiddleware.requireAuth , chatRoute);
 } ;

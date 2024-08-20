@@ -8,6 +8,10 @@ const port = process.env.PORT ;
 var bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser')
 
+// socket init
+const http = require('http');
+const { Server } = require("socket.io");
+
 
 database.connect();
 app.set("views", `${__dirname}/views`);
@@ -19,10 +23,16 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(cookieParser())
 
+// Socket io
+const server = http.createServer(app) ;
+const io = new Server(server) ;
+global._io = io ; // tạo biết toàn cục tới các file controller , js bên backend
+//end socket io
+
 
 routeAdmin(app);  
 routeClient(app) ;
 
-app.listen(port, () => {
+server.listen(port, () => {
 console.log(`Đang kết nối tới cổng ${port}`)
 })
