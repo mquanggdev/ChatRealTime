@@ -6,6 +6,7 @@ const database = require("./config/database");
 const app = express()
 const port = process.env.PORT ;
 var bodyParser = require('body-parser')
+var cookieParser = require('cookie-parser')
 
 
 database.connect();
@@ -16,6 +17,7 @@ app.use(express.static(`${__dirname}/public`));
 app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
+app.use(cookieParser())
 
 
 routeAdmin(app);  

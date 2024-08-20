@@ -28,9 +28,11 @@ header.header
           ul
               li
                 a(href="/chat") Chat
-              li
-                a(href="/users/logout") Đăng xuất
-              li
-                a(href="/users/login") Đăng nhập
-              li
-                a(href="/users/register") Đăng ký
+              if(user)
+                li
+                  a(href="/users/logout") Đăng xuất
+              else
+                li
+                  a(href="/users/login") Đăng nhập
+                li
+                  a(href="/users/register") Đăng ký
