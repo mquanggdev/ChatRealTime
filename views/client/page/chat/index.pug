@@ -15,9 +15,16 @@ block main
               div(class = (chat.userId == user.id ? "inner-outgoing" : "inner-incoming"))
                 if(chat.userId != user.id)
                   .inner-name #{chat.fullname}
-                .inner-content
-                  | #{chat.content}
+                if(chat.content)
+                  .inner-content
+                    | #{chat.content}
+                if(chat.images)
+                  .inner-images
+                    each image in chat.images
+                      img(src=image)
             div(class="inner-list-typing")
+          .inner-preview-images
+            div(class="custom-file-container" data-upload-id="upload-images")
           .inner-foot
             form(
               class="inner-form"
@@ -30,6 +37,10 @@ block main
               )
               span( class="btn btn-sm btn-light mx-1" button-icon)
                 <i class="fa-regular fa-face-smile"></i> 
+              label(
+                for="file-upload-with-preview-upload-images"
+                class="btn btn-sm btn-light mr-1 mb-0"
+              ) <i class="fa-regular fa-image"></i>
               button
                 | Send
       div( class="tooltip" role="tooltip")

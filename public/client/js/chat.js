@@ -1,6 +1,7 @@
 var socket = io() ;
 import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js'
 
+
 //  Typing event
 const inputChatBox = document.querySelector(".chat .inner-form input[name='content']");
 var typingTimeOut ;
@@ -54,15 +55,29 @@ if(elementListTyping){
 // CLIENT_SEND_MESSAGE
 const formChat = document.querySelector(".chat .inner-form");
 if(formChat){
+    const upload = new FileUploadWithPreview.FileUploadWithPreview('upload-images' , {
+        multiple : true ,
+        maxFileCount : 6
+    });
+
+    
+    upload.emulateInputSelection();
     formChat.addEventListener("submit" ,(e) => {
         e.preventDefault();
 
         const content = e.target.content.value ;
-        socket.emit("CLIENT_SEND_MESSAGE" , {
-            content : content
-        });
-        e.target.content.value = ""
-        socket.emit("CLIENT_SEND_TYPING", "hidden");
+
+        const images = upload.cachedFileArray;
+        if(content || images.length > 0){
+            socket.emit("CLIENT_SEND_MESSAGE" , {
+                content : content,
+                images : images
+            });
+            e.target.content.value = "";
+            upload.resetPreviewPanel();
+            socket.emit("CLIENT_SEND_TYPING", "hidden");
+        }
+        
         
     }) 
 }
@@ -74,6 +89,8 @@ socket.on("SERVER_RETURN_MESSAGE_TO_CLIENT" , (data) => {
     const curentuser = chatContainer.getAttribute("currentuser");
     const divChat = document.createElement("div");
     let userFullNameHtml = "" ;
+    let htmlContent = "" ;
+    let htmlImages = "" ;
     if(curentuser == data.userId){
         divChat.classList.add("inner-outgoing");
     }
@@ -82,9 +99,29 @@ socket.on("SERVER_RETURN_MESSAGE_TO_CLIENT" , (data) => {
         userFullNameHtml = `<div class="inner-name">${data.username}</div>`;
     }
 
+    if(data.content != ""){
+        htmlContent = `<div class="inner-content">${data.content}</div>`;
+    }
+    if(data.images.length > 0) {
+        htmlImages += `
+          <div class="inner-images">
+        `;
+    
+        for (const image of data.images) {
+          htmlImages += `
+            <img src="${image}">
+          `;
+        }
+    
+        htmlImages += `
+          </div>
+        `;
+      }
+
     divChat.innerHTML = `
     ${userFullNameHtml}
-    <div class="inner-content">${data.content}</div>
+    ${htmlContent}
+    ${htmlImages}
     `
 
     const bodyContainChat = document.querySelector(".chat .inner-body");
