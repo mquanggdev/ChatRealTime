@@ -128,6 +128,7 @@ socket.on("SERVER_RETURN_MESSAGE_TO_CLIENT" , (data) => {
     bodyContainChat.insertBefore(divChat, elementListTyping);
 
     bodyContainChat.scrollTop = bodyContainChat.scrollHeight;
+    new Viewer(divChat);
 } )
 // end SERVER_RETURN_MESSAGE_TO_CLIENT
 
@@ -161,3 +162,9 @@ if(buttonIcon){
         })       
 }
 // end Icon emoji
+
+// Preview Image
+if(bodyContainChat) {
+    new Viewer(bodyContainChat);
+  }
+  // End Preview Image
