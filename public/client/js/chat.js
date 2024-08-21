@@ -1,4 +1,5 @@
 var socket = io() ;
+import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js'
 
 // CLIENT_SEND_MESSAGE
 const formChat = document.querySelector(".chat .inner-form");
@@ -48,3 +49,27 @@ if(bodyContainChat) {
     bodyContainChat.scrollTop = bodyContainChat.scrollHeight;
 }
 // End Scroll Chat To Bottom
+
+
+// Icon emoji
+const emoji = document.querySelector('emoji-picker')
+if(emoji) {
+    const inputBox = document.querySelector(".chat .inner-form input[name='content']");
+    emoji.addEventListener('emoji-click', event => {
+        const icon = event.detail.unicode ;
+        if(icon) {
+            inputBox.value = inputBox.value + icon ;
+        }
+    });
+}
+
+// Giấu popup icon vào 1 icon nào đó
+const buttonIcon = document.querySelector('[button-icon]');
+if(buttonIcon){
+    const tooltip = document.querySelector('.tooltip');
+    Popper.createPopper(buttonIcon, tooltip);
+    buttonIcon.addEventListener("click" , () => {
+        tooltip.classList.toggle('shown');
+        })       
+}
+// end Icon emoji
