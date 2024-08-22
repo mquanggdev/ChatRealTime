@@ -448,7 +448,7 @@ h2 {
   object-fit: cover;
 }
 
-.user-info h2 {
+.user-info h3 {
   margin: 0;
   font-size: 22px;
   color: #333;
@@ -502,24 +502,20 @@ h2 {
   width: 360px;
 }
 
-h2 {
-  margin-bottom: 20px;
-  color: #333;
-}
 
 .form-group {
   margin-bottom: 15px;
 }
 
-label {
+.wrapper-profile label {
   display: block;
   margin-bottom: 5px;
   color: #555;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="tel"] {
+.wrapper-profile input[type="text"],
+.wrapper-profile input[type="email"],
+.wrapper-profile input[type="tel"] {
   width: 100%;
   padding: 8px;
   border: 1px solid #ccc;
@@ -527,7 +523,7 @@ input[type="tel"] {
   box-sizing: border-box;
 }
 
-button {
+.wrapper-profile button {
   width: 100%;
   padding: 10px;
   background-color: #007bff;
@@ -537,7 +533,7 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.wrapper-profile button:hover {
   background-color: #0056b3;
 }
 
