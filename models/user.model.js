@@ -11,6 +11,8 @@ const userSchema = new mongoose.Schema({
         type : String ,
         default: "active"
     },
+    address : String,
+    phone : String
 },{
     timestamps:true
 })

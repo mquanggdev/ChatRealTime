@@ -1,0 +1,57 @@
+include ../../layout/default.pug
+block main
+    .wrapper-profile
+        .box-profile 
+            .profile-container
+                .profile-header
+                    img.profile-avatar(src=profileUser.avatar, alt="Avatar")
+                    .user-info
+                        h3 #{profileUser.username}
+                        p #{profileUser.status}
+                    .setting-profile 
+                        <i class="fa-solid fa-gear"></i>
+                .profile-details
+                    .detail-item
+                        strong Email:
+                        |  #{profileUser.email}
+                    .detail-item
+                        strong Phone:
+                        |  #{profileUser.phone}
+                    .detail-item
+                        strong Location:
+                        |  #{profileUser.address}
+        .box-edit-profile
+            .form-container
+                h2 Change Profile
+                form(action="/users/profile/edit", method="post" enctype="multipart/form-data")
+                    .form-group
+                        label(for="name") Name:
+                        input#name(type="text", name="username", value=profileUser.username)
+                    .form-group
+                        label(for="email") Email:
+                        input#email(type="email", name="email", value=profileUser.email)
+                    .form-group
+                        label(for="phone") Phone:
+                        input#phone(type="text", name="phone", value=profileUser.phone)
+                    .form-group
+                        label(for="location") Address:
+                        input#location(type="text", name="address", value=profileUser.address)
+                    div(class="form-group" upload-image)
+                        label(for="avatar") Avatar :
+                        input#avatar(type="file", name="avatar", accept="image/*" , upload-image-input)
+                        img(
+                            src=""
+                            class="image-preview"
+                            upload-image-preview
+                        )
+                    .form-group
+                        label() Status : 
+                        .list-input-status 
+                            label(for="active") Active
+                                input.status(type="radio", name="status", id="active" value="active")
+                            label(for="inactive") Inactive
+                                input.status(type="radio", name="status", id="inactive" value="inactive")
+                            label(for="busy") Busy
+                                input.status(type="radio", name="status", id="busy" value="busy")
+                    button(type="submit") Save Changes
+        

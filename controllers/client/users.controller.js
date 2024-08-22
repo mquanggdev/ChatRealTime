@@ -168,3 +168,45 @@ module.exports.resetPost = async (req , res) => {
 
     res.redirect("/")
 }
+
+
+// Get users/profile
+module.exports.profile = async (req , res) => {
+    const user = await User.findOne({
+        tokenUser : req.cookies.tokenUser
+    }
+    );
+    
+    const profileUser = {
+        username: user.username,
+        email : user.email,
+        phone : user.phone || "Chưa cập nhật" ,
+        address : user.address || "Chưa cập nhật",
+        avatar : user.avatar || "",
+        status : user.status
+    }
+    res.render("client/page/profile/index.pug" ,{
+        pageTitle : "Trang cá nhân",
+        profileUser : profileUser
+    })
+}
+
+// Post users/profile/edit
+module.exports.profilePost = async (req , res) => {
+    const newObject = {
+        name: req.body.username,
+        email: req.body.email,
+        phone: req.body.phone,
+        address: req.body.address,
+        avatar: req.body.avatar,
+        status: req.body.status
+    }
+    const tokenUser = req.cookies.tokenUser ;
+    
+    if(tokenUser){
+        await User.updateOne({
+            tokenUser : tokenUser 
+        } , newObject );
+    }
+    res.redirect("/users/profile");
+}
