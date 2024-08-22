@@ -30,6 +30,8 @@ header.header
                 a(href="/chat") Chat
               if(user)
                 li
+                  a(href="/users/profile") #{user.username}
+                li
                   a(href="/users/logout") Đăng xuất
               else
                 li

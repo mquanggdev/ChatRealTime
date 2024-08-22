@@ -7,6 +7,7 @@ const app = express()
 const port = process.env.PORT ;
 var bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser')
+var methodOverride = require('method-override')
 
 // socket init
 const http = require('http');
@@ -22,6 +23,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 app.use(cookieParser())
+app.use(methodOverride('_method'))
 
 // Socket io
 const server = http.createServer(app) ;

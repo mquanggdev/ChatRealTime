@@ -1,4 +1,5 @@
 const User = require("../../models/user.model")
+const ForgotPassword = require("../../models/forgotPassword.model")
 const generate = require("../../helper/generate.helper");
 var md5 = require('md5');
 
@@ -60,4 +61,103 @@ module.exports.loginPost = async (req , res) => {
 module.exports.logout = async (req , res) => {
     res.clearCookie("tokenUser");
     res.redirect("/")
+}
+
+
+// Get users/forgot
+module.exports.forgot = async (req , res) => {    
+    res.render("client/page/users/forgot.pug" ,{
+        pageTitle : "Trang nhập email xác thực"
+    })
+}
+
+// post users/forgot
+module.exports.forgotPost = async (req , res) => {
+    const email = req.body.email ;
+    const exsitUser = await User.findOne({
+        email : email ,
+        status:"active"
+    });
+    if(!exsitUser) {
+        console.log("Không tồn tại email!");
+        res.redirect("back");
+        return ;
+    }
+    const otp = generate.generateOtp(6) ;
+
+    const infoOtpObj = {
+        email : email,
+        otp : otp,
+        expireAt : Date.now() + 1*60*1000  
+    }
+    const newInfoOtpObj = new ForgotPassword(infoOtpObj);
+    await newInfoOtpObj.save() ;
+
+    res.redirect(`/users/otp?email=${email}`);
+}
+
+
+// Get users/otp
+module.exports.otpEnter = async (req , res) => {
+    const email = req.query.email ;
+    res.render("client/page/users/otpEnter.pug" ,{
+        pageTitle : "Nhập OTP",
+        email: email
+    })
+}
+// post users/otp
+module.exports.otpEnterPost = async (req , res) => {    
+    const email = req.body.email;
+    const otp = req.body.otp ;
+    
+
+    const record = await ForgotPassword.findOne({
+        email : email,
+        otp : otp
+    })
+
+    if(!record){
+        console.log("Mã OTP không hợp lệ");
+        return;
+    }
+
+    const user = await User.findOne({
+        email:email
+    })
+
+    res.cookie("tokenUser" , user.tokenUser);
+    res.redirect("/users/resetPassword");
+}
+
+// Get users/resetPassword
+module.exports.reset = async (req , res) => {
+    res.render("client/page/users/reset.pug" ,{
+        pageTitle : "Nhập mât khẩu mới",
+    })
+}
+
+// Post users/resetPassword
+module.exports.resetPost = async (req , res) => {
+    const password = req.body.password ;
+    const re_password = req.body.re_password;
+
+    if(password != re_password){
+        console.log("Mật khẩu không trùng khớp");
+        res.redirect("back");
+    }
+
+    const newPassword = md5(password) ;
+
+    const user = await User.findOne({
+        tokenUser : req.cookies.tokenUser
+    });
+
+    await User.updateOne({
+        _id : user.id
+    },{
+        password : newPassword
+    })
+
+
+    res.send("ok")
 }

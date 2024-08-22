@@ -1,0 +1,10 @@
+include ../../layout/default.pug
+block main
+    .body-container
+        .login-container
+            h2 Email xác thực
+            form(action='/users/forgot', method='POST')
+                .input-group
+                    label(for='email') Email
+                    input(type='email', name='email', required='' id="email")
+                button(type='submit' class="login-button") Gửi

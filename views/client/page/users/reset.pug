@@ -1,0 +1,13 @@
+include ../../layout/default.pug
+block main
+    .body-container
+        .login-container
+            h2 Nhập mật khẩu mới
+            form(action='/users/resetPassword?_method=PATCH', method='POST')
+                .input-group
+                    label(for='password') Mật khẩu mới
+                    input(type='password', name='password', required='' id="password")
+                .input-group
+                    label(for='re-password') Nhập lại mật khẩu
+                    input(type='password', name='re_password', required='' id="re-password")
+                button(type='submit' class="login-button") Gửi

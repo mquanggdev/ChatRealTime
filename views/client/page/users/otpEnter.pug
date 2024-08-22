@@ -1,0 +1,13 @@
+include ../../layout/default.pug
+block main
+    .body-container
+        .login-container
+            h2 Nhập OTP 
+            form(action='/users/otp', method='POST')
+                .input-group
+                    label(for='email') Email
+                    input(type='email', name='email', id="email" ,readonly ,value=`${email}`)
+                .input-group
+                    input(type='text', name='otp', required='' id="otp")
+                    span Gửi lại sau 60s
+                button(type='submit' class="login-button") Gửi
