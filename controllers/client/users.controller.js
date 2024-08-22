@@ -210,3 +210,19 @@ module.exports.profilePost = async (req , res) => {
     }
     res.redirect("/users/profile");
 }
+
+
+// get users/friend-recomendation-list
+module.exports.friendRecomendation = async (req , res) => {
+    const userId = res.locals.user.id ;
+     
+    const listUser = await User.find({
+        _id : {$ne : userId},
+        status :"active",
+    }).select("id avatar username");
+
+    res.render("client/page/users/friend-recomendation-list", {
+        pageTitle: "Danh sách đề cử kết bạn",
+        users: listUser
+      });
+}

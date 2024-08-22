@@ -6,6 +6,9 @@ var upload = multer();
 const uploadMiddleware = require("../../middleware/client/uploadSingle.middleware.js");
 
 const controller = require("../../controllers/client/users.controller");
+
+
+
 route.get("/register" , controller.register);
 route.post("/register" , validate.validateFormRegister,controller.registerPost)
 route.get("/login" , controller.login);
@@ -19,4 +22,8 @@ route.get("/resetPassword" , controller.reset);
 route.patch("/resetPassword" , controller.resetPost);
 route.get("/profile" , controller.profile);
 route.post("/profile/edit",upload.single('avatar') , uploadMiddleware.uploadSingle , controller.profilePost);
+
+
+
+route.get("/friend-recomendation-list" , controller.friendRecomendation)
 module.exports = route ;
