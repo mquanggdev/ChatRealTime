@@ -1,6 +1,8 @@
 const User = require("../../models/user.model")
 const ForgotPassword = require("../../models/forgotPassword.model")
 const generate = require("../../helper/generate.helper");
+const sendEmailHelper = require("../../helper/sendEmail.helper");
+
 var md5 = require('md5');
 
 // Get users/register
@@ -93,6 +95,11 @@ module.exports.forgotPost = async (req , res) => {
     const newInfoOtpObj = new ForgotPassword(infoOtpObj);
     await newInfoOtpObj.save() ;
 
+    const subject = `Mã OTP lấy lại mật khẩu.`;
+    const textHTML = `Mã OTP xác thực của bạn là <b style="color: green;">${otp}</b>. Mã OTP có hiệu lực trong 3 phút. Vui lòng không cung cấp mã OTP cho người khác.`;
+
+    sendEmailHelper.sendMail(email,subject,textHTML);
+
     res.redirect(`/users/otp?email=${email}`);
 }
 
@@ -159,5 +166,5 @@ module.exports.resetPost = async (req , res) => {
     })
 
 
-    res.send("ok")
+    res.redirect("/")
 }
