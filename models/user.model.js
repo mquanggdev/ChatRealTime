@@ -12,7 +12,10 @@ const userSchema = new mongoose.Schema({
         default: "active"
     },
     address : String,
-    phone : String
+    phone : String,
+    acceptFriends : Array,
+    requestFriends : Array,
+    friendsList : Array
 },{
     timestamps:true
 })

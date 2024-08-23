@@ -7,16 +7,16 @@ block main
 
     .row
       .col-12
-        h3 Danh sách đề cử kết bạn
+        h3 Danh sách lời mời đã gửi
 
     .row
       each user in users
         .col-6
-          div(class="box-user")
+          div(class="box-user add")
             div(class="inner-avatar")
               img(
                 src=user.avatar
-                alt=user.fullName
+                alt=user.username
               )
             div(class="inner-info")
               div(class="inner-name") #{user.username}

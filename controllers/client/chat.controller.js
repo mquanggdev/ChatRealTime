@@ -9,7 +9,10 @@ module.exports.index = async (req , res) => {
          const infoUser = await User.findOne({
             _id : chat.userId
          })
-         chat.fullname = infoUser.username; 
+         if(infoUser){
+            chat.fullname = infoUser.username ; 
+         }
+         
     }
     res.render("client/page/chat/index.pug" ,{
         pageTitle : "Chat",

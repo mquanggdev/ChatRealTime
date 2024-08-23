@@ -2,7 +2,7 @@ const User = require("../../models/user.model")
 const ForgotPassword = require("../../models/forgotPassword.model")
 const generate = require("../../helper/generate.helper");
 const sendEmailHelper = require("../../helper/sendEmail.helper");
-
+const usersSocket = require("../../socket/client/users.socket")
 var md5 = require('md5');
 
 // Get users/register
@@ -215,13 +215,84 @@ module.exports.profilePost = async (req , res) => {
 // get users/friend-recomendation-list
 module.exports.friendRecomendation = async (req , res) => {
     const userId = res.locals.user.id ;
-     
+    // SocketIO
+    usersSocket.usersSocket(req, res);
+    // End SocketIO
+
+    const requestFriends = res.locals.user.requestFriends;
+    const acceptFriends = res.locals.user.acceptFriends;
+    const friendsList = res.locals.user.friendsList;
+    const friendsListId = friendsList.map(item => item.userId);
+    
     const listUser = await User.find({
-        _id : {$ne : userId},
+        $and : [
+            {_id : {$ne : userId}},
+            {_id : {$nin : requestFriends}},
+            {_id : {$nin : acceptFriends}},
+            {_id : {$nin : friendsListId}},
+        ],
         status :"active",
     }).select("id avatar username");
 
     res.render("client/page/users/friend-recomendation-list", {
+        pageTitle: "Danh sách đề cử kết bạn",
+        users: listUser
+      });
+}
+
+// get users/list-friends
+module.exports.friends = async (req , res) => {
+    const userId = res.locals.user.id ;
+    // SocketIO
+    usersSocket.usersSocket(req, res);
+    // End SocketIO
+
+    const friendsList = res.locals.user.friendsList;
+    const friendsListId = friendsList.map(item => item.userId);
+
+    const listUser = await User.find({
+        _id : {$in : friendsListId},
+        status :"active",
+    }).select("id avatar username");
+
+    res.render("client/page/users/list-friends", {
+        pageTitle: "Danh sách bạn bè",
+        users: listUser
+      });
+}
+// get users/list-request
+module.exports.request = async (req , res) => {
+    const userId = res.locals.user.id ;
+    // SocketIO
+    usersSocket.usersSocket(req, res);
+    // End SocketIO
+
+    const requestFriends = res.locals.user.requestFriends;
+
+    const listUser = await User.find({
+        _id : {$in : requestFriends},
+        status :"active",
+    }).select("id avatar username");
+
+    res.render("client/page/users/list-request", {
+        pageTitle: "Danh sách lời mời đã gửi",
+        users: listUser
+      });
+}
+// get users/list-accept
+module.exports.accept = async (req , res) => {
+    const userId = res.locals.user.id ;
+    // SocketIO
+    usersSocket.usersSocket(req, res);
+    // End SocketIO
+    const acceptFriends = res.locals.user.acceptFriends;
+    
+    const listUser = await User.find({
+        _id : {$in : acceptFriends},
+        status :"active",
+    }).select("id avatar username");
+
+    res.render("client/page/users/list-accept", {
         pageTitle: "Danh sách đề cử kết bạn",
         users: listUser
       });

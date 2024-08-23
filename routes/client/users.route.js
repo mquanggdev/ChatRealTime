@@ -26,4 +26,9 @@ route.post("/profile/edit",upload.single('avatar') , uploadMiddleware.uploadSing
 
 
 route.get("/friend-recomendation-list" , controller.friendRecomendation)
+route.get("/list-friends" , controller.friends)
+route.get("/list-request" , controller.request)
+route.get("/list-accept" , controller.accept)
+
+
 module.exports = route ;

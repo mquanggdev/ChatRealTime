@@ -1,3 +1,4 @@
+var socket = io() ;
 
 const settingButton = document.querySelector(".box-profile .setting-profile");
 const boxEditProfile = document.querySelector(".box-edit-profile");
