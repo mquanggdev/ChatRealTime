@@ -13,6 +13,14 @@ if(listButonAddFriend.length > 0) {
         })
     })
 }
+    // sau khi client gửi lời mời kết bạn thì sever sẽ gửi về độ số lời mời kết bạn được gửi đến => bắt lấy sự kiện cập nhật ra giao diện
+    socket.on("SERVER_RETURN_QUANTITY_REQUEST_ADD_FRIEND" , (data) => {
+        const bageUserAccept = document.querySelector(`[badge-users-accept="${data.userId}"]`);
+        if (bageUserAccept) {
+            bageUserAccept.innerHTML = data.length
+        }
+        
+    })
 // end chức năng gửi lời kết bạn
 
 
@@ -29,6 +37,14 @@ if(listButonCancelFriend.length > 0) {
         })
     })
 }
+// tương tự như bên gửi kết bạn thì khi ấn hủy lời mời thì ta cx cần cập nhật lại số lượng
+socket.on("SERVER_RETURN_QUANTITY_REQUEST_CANCEL_FRIEND" , (data) => {
+    const bageUserAccept = document.querySelector(`[badge-users-accept="${data.userId}"]`);
+    if (bageUserAccept) {
+        bageUserAccept.innerHTML = data.length
+    }
+    
+})
 // end chức năng hủy lời mời kết bạn
 
 

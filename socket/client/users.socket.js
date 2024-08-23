@@ -36,7 +36,17 @@ module.exports.usersSocket = (req,res) => {
                         }
                     })
                 }
+
+                // ví dụ khi mình ấn nút gửi kết bạn thì sẽ cần phải cập nhật lại số lượng lời mời đã nhận bên người bạn kia => sự kiện này sẽ được gửi đến bên kia
+                const infoYorFriend = await User.findOne({
+                    _id : friendId 
+                }) 
+                socket.broadcast.emit("SERVER_RETURN_QUANTITY_REQUEST_ADD_FRIEND" , {
+                    length : infoYorFriend.acceptFriends.length,
+                    userId : friendId
+                })
             })
+            
 
             // 2 : khi ấn vào nút hủy kết bạn
             socket.on("CLIENT_SEND_REQUEST_CANCEL_FRIEND" , async (friendId) => {
@@ -70,6 +80,14 @@ module.exports.usersSocket = (req,res) => {
                         }
                     })
                 }
+
+                const infoYorFriend = await User.findOne({
+                    _id : friendId 
+                }) 
+                socket.broadcast.emit("SERVER_RETURN_QUANTITY_REQUEST_CANCEL_FRIEND" , {
+                    length : infoYorFriend.acceptFriends.length,
+                    userId : friendId
+                })
             })
 
             // 3 : khi ấn vào nút từ chối kết bạn
