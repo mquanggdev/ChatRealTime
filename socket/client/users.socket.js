@@ -36,6 +36,14 @@ module.exports.usersSocket = (req,res) => {
                         }
                     })
                 }
+                // Khi mình gửi lời mời kết bạn thì ta phải hiển thị thông tin bản thân vào trong danh sách đã nhận của người bạn kia
+                const myInfo = await User.findOne({
+                    _id : myId
+                })
+                socket.broadcast.emit("SERVER_RETURN_REQUEST_ADD_FRIEND" , {
+                    infoUser : myInfo ,
+                    friendId : friendId
+                });
 
                 // ví dụ khi mình ấn nút gửi kết bạn thì sẽ cần phải cập nhật lại số lượng lời mời đã nhận bên người bạn kia => sự kiện này sẽ được gửi đến bên kia
                 const infoYorFriend = await User.findOne({
@@ -87,6 +95,11 @@ module.exports.usersSocket = (req,res) => {
                 socket.broadcast.emit("SERVER_RETURN_QUANTITY_REQUEST_CANCEL_FRIEND" , {
                     length : infoYorFriend.acceptFriends.length,
                     userId : friendId
+                })
+
+                socket.broadcast.emit("SERVER_RETURN_ID_REQUEST_CANCEL_FRIEND" , {
+                    myId : myId,
+                    friendId : friendId
                 })
             })
 
