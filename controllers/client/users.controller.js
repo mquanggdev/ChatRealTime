@@ -53,6 +53,19 @@ module.exports.loginPost = async (req , res) => {
     if(user.password !== password){
         return;
     }
+    await User.updateOne({
+        email: email ,
+    },{
+        statusOnline : "online"
+    })
+
+    _io.once("connection", (socket) => {
+        // Trả ra cho bạn bè trạng thái online của mình
+        socket.broadcast.emit("SERVER_RETURN_USER_ONLINE", {
+          statusOnline: "online",
+          myId: user.id
+        })
+      });
 
     res.cookie("tokenUser", user.tokenUser);
     res.redirect("/dashboard");
@@ -61,6 +74,25 @@ module.exports.loginPost = async (req , res) => {
 
 // [GET] /users/logout
 module.exports.logout = async (req , res) => {
+    try {
+        await User.updateOne({
+            _id: res.locals.user.id ,
+        },{
+            statusOnline : "offline"
+        })
+    } catch (error) {
+        console.log(error);
+        
+    }
+    
+    _io.once("connection", (socket) => {
+        // Trả ra cho bạn bè trạng thái online của mình
+        socket.broadcast.emit("SERVER_RETURN_USER_ONLINE", {
+          statusOnline: "offline",
+          myId: res.locals.user.id
+        })
+      });
+    
     res.clearCookie("tokenUser");
     res.redirect("/")
 }
@@ -183,7 +215,7 @@ module.exports.profile = async (req , res) => {
         phone : user.phone || "Chưa cập nhật" ,
         address : user.address || "Chưa cập nhật",
         avatar : user.avatar || "",
-        status : user.status
+        statusOnline : user.statusOnline
     }
     res.render("client/page/profile/index.pug" ,{
         pageTitle : "Trang cá nhân",
@@ -199,7 +231,7 @@ module.exports.profilePost = async (req , res) => {
         phone: req.body.phone,
         address: req.body.address,
         avatar: req.body.avatar,
-        status: req.body.status
+        statusOnline: req.body.status
     }
     const tokenUser = req.cookies.tokenUser ;
     
@@ -208,6 +240,13 @@ module.exports.profilePost = async (req , res) => {
             tokenUser : tokenUser 
         } , newObject );
     }
+    _io.once("connection", (socket) => {
+        socket.broadcast.emit("SERVER_RETURN_USER_ONLINE", {
+          statusOnline: req.body.status,
+          myId: res.locals.user.id
+        })
+      });
+
     res.redirect("/users/profile");
 }
 
@@ -253,7 +292,7 @@ module.exports.friends = async (req , res) => {
     const listUser = await User.find({
         _id : {$in : friendsListId},
         status :"active",
-    }).select("id avatar username");
+    }).select("id avatar username statusOnline");
 
     res.render("client/page/users/list-friends", {
         pageTitle: "Danh sách bạn bè",

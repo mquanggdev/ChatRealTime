@@ -158,4 +158,15 @@ if(listButonRemoveFriend.length > 0) {
         })
     })
 }
+
+
+//6 : Chức năng hiển thị realtime trạng thái online hoặc offline
+socket.on("SERVER_RETURN_USER_ONLINE" , (data) => {
+    const divBoxUserFriend = document.querySelector("[list-friend-my-id]");
+    const divUser = divBoxUserFriend.querySelector(`[friendId = "${data.myId}"]`);
+
+    const divStatusOnline = divUser.querySelector("[statusOnline]");
+    divStatusOnline.setAttribute("statusOnline" , data.statusOnline) ;
+    
+})
 /*END SOCKET */

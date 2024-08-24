@@ -7,7 +7,7 @@ block main
                     img.profile-avatar(src=profileUser.avatar, alt="Avatar")
                     .user-info
                         h3 #{profileUser.username}
-                        p #{profileUser.status}
+                        p #{profileUser.statusOnline}
                     .setting-profile 
                         <i class="fa-solid fa-gear"></i>
                 .profile-details
@@ -47,10 +47,10 @@ block main
                     .form-group
                         label() Status : 
                         .list-input-status 
-                            label(for="active") Active
-                                input.status(type="radio", name="status", id="active" value="active")
-                            label(for="inactive") Inactive
-                                input.status(type="radio", name="status", id="inactive" value="inactive")
+                            label(for="online") Online
+                                input.status(type="radio", name="status", id="online" value="online")
+                            label(for="offline") Offline
+                                input.status(type="radio", name="status", id="offline" value="offline")
                             label(for="busy") Busy
                                 input.status(type="radio", name="status", id="busy" value="busy")
                     button(type="submit") Save Changes

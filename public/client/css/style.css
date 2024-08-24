@@ -372,8 +372,12 @@ h2 {
   right: 10px;
 }
 
-.box-user .inner-status[status="online"] {
+.box-user .inner-status[statusOnline="online"] {
   opacity: 1;
+}
+.box-user .inner-status[statusOnline="busy"]{
+  opacity: 1;
+  color: orange;
 }
 /* End box-user */
 

@@ -15,7 +15,8 @@ const userSchema = new mongoose.Schema({
     phone : String,
     acceptFriends : Array,
     requestFriends : Array,
-    friendsList : Array
+    friendsList : Array,
+    statusOnline : String
 },{
     timestamps:true
 })
