@@ -140,7 +140,7 @@ if(listButonAcceptFriend.length > 0) {
     listButonAcceptFriend.forEach(button => {
         button.addEventListener("click" , () => {
             // thêm class add vào box-user để nó hiển thị nội dung khác
-            button.closest(".box-user").classList.add("accept") ;
+            button.closest(".box-user").classList.add("accepted") ;
 
             const friendId = button.getAttribute("btn-accept-friend")
             socket.emit("CLIENT_SEND_REQUEST_ACCEPT_FRIEND" , friendId)
