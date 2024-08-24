@@ -153,6 +153,8 @@ const listButonRemoveFriend = document.querySelectorAll(".box-user [btn-remove-f
 if(listButonRemoveFriend.length > 0) {
     listButonRemoveFriend.forEach(button => {
         button.addEventListener("click" , () => {
+            button.closest(".box-user").classList.remove("none-remove") ;
+            button.closest(".box-user").classList.add("remove") ;
             const friendId = button.getAttribute("btn-remove-friend")
             socket.emit("CLIENT_SEND_REQUEST_REMOVE_FRIEND" , friendId)
         })

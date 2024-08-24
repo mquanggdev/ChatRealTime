@@ -12,7 +12,7 @@ block main
     .row(list-friend-my-id = user.id)
       each user in users
         .col-6(friendId=user.id)
-          div(class="box-user")
+          div(class="box-user none-remove" )
             div(class="inner-avatar")
               img(
                 src=user.avatar
@@ -23,11 +23,16 @@ block main
               div(class="inner-buttons")
                 button(
                   class="btn btn-sm btn-primary mr-1"
+                  btn-chat-friend=user.id
                 ) Nhắn tin
                 button(
                   class="btn btn-sm btn-secondary mr-1"
                   btn-remove-friend=user.id
                 ) Xóa kết bạn
+                button(
+                  class="btn btn-sm btn-primary mr-1"
+                  btn-add-friend=user.id
+                ) Kết bạn
               div(
               class="inner-status"
               statusOnline=user.statusOnline

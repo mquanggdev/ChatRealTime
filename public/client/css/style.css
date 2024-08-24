@@ -354,6 +354,18 @@ h2 {
 .box-user.accepted [btn-accept-friend] {
   display: none;
 }
+.box-user.remove [btn-chat-friend] {
+  display: none;
+}
+.box-user.remove [btn-remove-friend] {
+  display: none;
+}
+.box-user.remove [btn-add-friend] {
+  display: block;
+}
+.box-user.none-remove [btn-add-friend] {
+  display: none;
+}
 
 .box-user.accepted [btn-refuse-friend] {
   display: none;
