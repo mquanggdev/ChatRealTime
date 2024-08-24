@@ -21,9 +21,10 @@ block main
             div(class="inner-info")
               div(class="inner-name") #{user.username}
               div(class="inner-buttons")
-                button(
+                a(
                   class="btn btn-sm btn-primary mr-1"
                   btn-chat-friend=user.id
+                  href=`/chat/${user.room_vs_friend}`
                 ) Nhắn tin
                 button(
                   class="btn btn-sm btn-secondary mr-1"

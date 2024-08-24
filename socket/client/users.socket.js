@@ -1,4 +1,5 @@
 const User = require("../../models/user.model");
+const RoomChat = require("../../models/rooms-chat.model");
 
 module.exports.usersSocket = (req,res) => {
     const myId = res.locals.user.id ;
@@ -141,6 +142,27 @@ module.exports.usersSocket = (req,res) => {
             socket.on("CLIENT_SEND_REQUEST_ACCEPT_FRIEND" , async (friendId) => {
                 // với sự kiện này thì ta sẽ thêm id của người bạn B vào list friend  của mình và xóa id của người bạn B trong list accept của mình 
                 // thêm id của mình vào list friend của người bạn B và xóa id của mình trong list request của người bạn đó
+                // tạo phòng chat
+                try{
+                const friend = await User.findOne({
+                    _id:friendId
+                })
+                const roomChat = new RoomChat({
+                    title: friend.username ,
+                    typeRoom : "friend" ,
+                    avatar : friend.avatar,
+                    members : [
+                        {
+                            userId : myId,
+                            role : "member",
+                        },{
+                            userId : friendId,
+                            role :  "member"
+                        }
+                    ]
+                })
+                await roomChat.save() ;
+
                 const existFriendInListRequest = await User.findOne({
                     _id : friendId,
                     requestFriends : myId
@@ -153,7 +175,7 @@ module.exports.usersSocket = (req,res) => {
                         $push :{
                             friendsList : {
                                 userId : myId,
-                                roomChat :""
+                                roomChat :roomChat.id
                             }
                         },
                         $pull : {
@@ -174,13 +196,16 @@ module.exports.usersSocket = (req,res) => {
                         $push :{
                             friendsList : {
                                 userId : friendId,
-                                roomChat :""
+                                roomChat :roomChat.id
                             }
                         },
                         $pull : {
                             acceptFriends : friendId
                         }
                     })
+                }
+            }catch(e){
+                    console.log(e); 
                 }
             })
 
@@ -224,7 +249,7 @@ module.exports.usersSocket = (req,res) => {
 
 
 
-            })     
+            })
         })        
     } catch (error) {
         console.log(error);
