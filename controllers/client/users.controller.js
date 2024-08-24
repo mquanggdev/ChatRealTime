@@ -296,8 +296,11 @@ module.exports.friends = async (req , res) => {
 
     listUser.forEach(user => {
         const infoUser = friendsList.find(friend => friend.userId == user.id) ;
-        user.room_vs_friend = infoUser.roomChat
+        console.log(infoUser);
+        user.roomChat = infoUser.roomChat ;
     })
+    // console.log(listUser);
+    
 
     res.render("client/page/users/list-friends", {
         pageTitle: "Danh sách bạn bè",
