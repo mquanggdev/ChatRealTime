@@ -26,11 +26,14 @@ header.header
       .col-4
         .inner-menu
           ul
-              li
-                a(href="/users/list-friends") Bạn bè
               if(user)
                 li
+                  a(href="/users/list-friends") Bạn bè
+                li
+                  a(href="/rooms-chat") Phòng Chat
+                li
                   a(href="/users/profile") #{user.username}
+                
                 li
                   a(href="/users/logout") Đăng xuất
               else

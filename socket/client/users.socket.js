@@ -148,9 +148,8 @@ module.exports.usersSocket = (req,res) => {
                     _id:friendId
                 })
                 const roomChat = new RoomChat({
-                    title: friend.username ,
                     typeRoom : "friend" ,
-                    avatar : friend.avatar,
+
                     members : [
                         {
                             userId : myId,
